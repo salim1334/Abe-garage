@@ -9,6 +9,7 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 // Import the employee controller
 const employee_controller_1 = __importDefault(require("../controller/employee.controller"));
-router.post('/api/employee', employee_controller_1.default);
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+router.post('/api/employee', auth_middleware_1.verifyToken, auth_middleware_1.isAdmin, employee_controller_1.default);
 // Export the router
 exports.default = router;

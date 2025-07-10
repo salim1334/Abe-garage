@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 // import employee.service.js 
 import employeeService from '../../../services/employee.service';
+import { useAuth } from '../../../context/AuthContext';
 
 function AddEmployeeForm() {
   const [employee_email, setEmail] = useState<string>('');
@@ -16,6 +17,14 @@ function AddEmployeeForm() {
   const [passwordError, setPasswordError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
   const [serverError, setServerError] = useState<string>('');
+
+  // Create a variable to hold the user's token
+  let employeeToken = '';
+  // Destructure the auth hook and get the token
+  const { employee } = useAuth();
+  if (employee && employee.employee_token) {
+    employeeToken = employee.employee_token;
+  }
 
   const handleSubmit = (e:React.FormEvent) => {
     // Prevent the default behavior of the form
@@ -66,7 +75,7 @@ function AddEmployeeForm() {
     };
 
     // Pass the form data to the service
-    const newEmployee = employeeService.createEmployee(formData);
+    const newEmployee = employeeService.createEmployee(formData, employeeToken);
     newEmployee
       .then((response) => response.json())
       .then((data) => {
@@ -80,10 +89,10 @@ function AddEmployeeForm() {
           setServerError('');
           // Redirect to the employees page after 2 seconds
           // For now, just redirect to the home page
-          setTimeout(() => {
-            // window.location.href = '/admin/employees';
-            window.location.href = '/';
-          }, 2000);
+          // setTimeout(() => {
+          //   // window.location.href = '/admin/employees';
+          //   window.location.href = '/';
+          // }, 2000);
         }
       })
       // Handle Catch

@@ -6,8 +6,9 @@ const router = Router();
 
 // Import the employee controller
 import createEmployee from '../controller/employee.controller';
+import { verifyToken, isAdmin } from '../middlewares/auth.middleware';
 
-router.post('/api/employee', createEmployee);
+router.post('/api/employee', verifyToken, isAdmin, createEmployee);
 
 // Export the router
 export default router;

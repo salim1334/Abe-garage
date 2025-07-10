@@ -65,7 +65,7 @@ async function createEmployee(employee: any) {
 }
 
 // A function to get employee by email
-async function getEmployeeByEmail(employee_email: string) {
+async function getEmployeeByEmail(employee_email: any) {
   const query = `
     SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_pass ON employee.employee_id = employee_pass.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id WHERE employee.employee_email = ?
   `;
