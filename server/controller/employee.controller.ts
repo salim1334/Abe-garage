@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import {
   checkIfEmployeeExists,
   createEmployee,
+  getAllEmployee,
 } from '../services/employee.service';
 
 // create the add employee controller
@@ -39,4 +40,20 @@ async function createEmployees(
   }
 }
 
-export default createEmployees;
+// Create the getAllEmployees controller
+async function getAllEmployees(req:Request, res: Response, next: NextFunction) {
+  // Call the getAllEmployees method from the employee service 
+  const employees = await getAllEmployee();
+  if (!employees) {
+    res.status(400).json({
+      error: "Failed to get all employees!"
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      data: employees,
+    });
+  }
+}
+
+export { createEmployees, getAllEmployees };

@@ -1,10 +1,13 @@
 // Import the auth hook
 import { useAuth } from '../../context/AuthContext';
-// Import the Login component
+// Import the login form component
 import LoginForm from '../../components/LoginForm/LoginForm';
-import type { JSX } from 'react';
+// Import the admin menu component
+import AdminMenu from '../../components/Admin/AdminMenu/AdminMenu';
+// Import the EmployeesList component
+import EmployeesList from '../../components/Admin/EmployeesList/EmployeesList';
 
-function Employees(): JSX.Element {
+function Employees() {
   // Destructure the auth hook
   const { isLogged, isAdmin } = useAuth();
 
@@ -12,7 +15,16 @@ function Employees(): JSX.Element {
     if (isAdmin) {
       return (
         <div>
-          <h1>Employees Page</h1>
+          <div className="container-fluid admin-pages">
+            <div className="row">
+              <div className="col-md-3 admin-left-side">
+                <AdminMenu />
+              </div>
+              <div className="col-md-9 admin-right-side">
+                <EmployeesList />
+              </div>
+            </div>
+          </div>
         </div>
       );
     } else {

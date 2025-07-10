@@ -25,7 +25,7 @@ const pool = mysql.createPool(dbConfig);
 })();
 
 // Prepare a function that will execute a query asynchronously
-async function query(sql: string, params: any[]) {
+async function query(sql: string, params?: any[]) {
   try {
     const [rows] = await pool.execute(sql, params);
     return rows;

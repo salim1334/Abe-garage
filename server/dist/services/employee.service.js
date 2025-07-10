@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkIfEmployeeExists = checkIfEmployeeExists;
 exports.createEmployee = createEmployee;
 exports.getEmployeeByEmail = getEmployeeByEmail;
+exports.getAllEmployee = getAllEmployee;
 // Import the query function from the db.config.js file
 const db_config_1 = __importDefault(require("../config/db.config"));
 // Import the bcrypt module
@@ -72,5 +73,11 @@ async function getEmployeeByEmail(employee_email) {
     SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_pass ON employee.employee_id = employee_pass.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id WHERE employee.employee_email = ?
   `;
     const rows = await db_config_1.default.query(query, [employee_email]);
+    return rows;
+}
+// A function to get all employees
+async function getAllEmployee() {
+    const query = "SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id INNER JOIN company_roles ON employee_role.company_role_id = company_roles.company_role_id ORDER BY employee.employee_id DESC limit 10";
+    const rows = await db_config_1.default.query(query);
     return rows;
 }
