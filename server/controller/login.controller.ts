@@ -1,18 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 // Import the login service 
-import { logInService } from '../services/login.service';
+import { login } from '../services/login.service';
 // Import the jsonwebtoken module
 import jwt from 'jsonwebtoken';
 // Import the secret key from the environment variables
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRETJWT_SECRET;
 
 // Handle employee login 
 async function logIn(req: Request, res: Response, next: NextFunction) {
   try {
     console.log(req.body);
-    const employeeData = req.body;
+    const employeeData: any = req.body;
     // Call the logIn method from the login service 
-    const employee = await logInService(employeeData);
+    const employee: any = await login(employeeData);
     // If the employee is not found
     if (employee.status === "fail") {
       res.status(403).json({
@@ -41,7 +41,10 @@ async function logIn(req: Request, res: Response, next: NextFunction) {
       data: sendBack,
     });
   } catch (error) {
-
+    res.status(403).json({
+      status: 'fail',
+      message: 'Error while login'
+    });
   }
 }
 

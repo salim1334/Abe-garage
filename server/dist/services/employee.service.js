@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkIfEmployeeExists = checkIfEmployeeExists;
 exports.createEmployee = createEmployee;
+exports.getEmployeeByEmail = getEmployeeByEmail;
 // Import the query function from the db.config.js file
 const db_config_1 = __importDefault(require("../config/db.config"));
 // Import the bcrypt module
@@ -21,6 +22,7 @@ async function checkIfEmployeeExists(email) {
 }
 // A function to create a new employee
 async function createEmployee(employee) {
+    console.log('company_role_id:', employee.company_role_id);
     let createdEmployee = {};
     try {
         // Generate a salt and hash the password
@@ -33,7 +35,6 @@ async function createEmployee(employee) {
             employee.employee_email,
             employee.active_employee,
         ]);
-        console.log(rows);
         if (rows.affectedRows !== 1) {
             return false;
         }
@@ -64,4 +65,12 @@ async function createEmployee(employee) {
     }
     // Return the employee object
     return createdEmployee;
+}
+// A function to get employee by email
+async function getEmployeeByEmail(employee_email) {
+    const query = `
+    SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_pass ON employee.employee_id = employee_pass.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id WHERE employee.employee_email = ?
+  `;
+    const rows = await db_config_1.default.query(query, [employee_email]);
+    return rows;
 }

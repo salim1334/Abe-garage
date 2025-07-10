@@ -16,6 +16,7 @@ async function checkIfEmployeeExists(email: string) {
 
 // A function to create a new employee
 async function createEmployee(employee: any) {
+  console.log('company_role_id:', employee.company_role_id);
   let createdEmployee: any = {};
   try {
     // Generate a salt and hash the password
@@ -29,7 +30,6 @@ async function createEmployee(employee: any) {
       employee.employee_email,
       employee.active_employee,
     ]);
-    console.log(rows);
     if (rows.affectedRows !== 1) {
       return false;
     }
@@ -64,4 +64,15 @@ async function createEmployee(employee: any) {
   return createdEmployee;
 }
 
-export { checkIfEmployeeExists, createEmployee };
+// A function to get employee by email
+async function getEmployeeByEmail(employee_email: string) {
+  const query = `
+    SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_pass ON employee.employee_id = employee_pass.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id WHERE employee.employee_email = ?
+  `;
+  const rows: any = await conn.query(query, [employee_email]);
+  return rows;
+}
+// Check later
+//  INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id WHERE employee.employee_email = ?
+
+export { checkIfEmployeeExists, createEmployee, getEmployeeByEmail };

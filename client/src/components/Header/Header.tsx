@@ -1,7 +1,16 @@
+import { Link } from 'react-router-dom';
 import logo from '../../assets/template_assets/images/custom/logo.png';
-import logoTwo from '../../assets/template_assets/images/logo-two.png';
+import { useAuth } from '../../context/AuthContext';
+import { logOut } from '../../services/login.service';
 
 function Header() {
+  const { isLogged, setIsLogged, employee } = useAuth();
+
+  const logOutHandler = () => { 
+    logOut();
+    setIsLogged(false);
+  };
+
   return (
     <header className="main-header header-style-one">
       {/* Header Top */}
@@ -15,9 +24,18 @@ function Header() {
               </div>
             </div>
             <div className="right-column">
-              <div className="phone-number">
-                Schedule Your Appontment Today : <strong>1800 456 7890</strong>
-              </div>
+              {isLogged ? (
+                <div className="link-btn">
+                  <div className="phone-number">
+                    <strong>Welcome {employee?.employee_first_name}</strong>
+                  </div>
+                </div> 
+              ) : (
+                <div className="phone-number">
+                  Schedule Your Appontment Today :{' '}
+                  <strong>1800 456 7890</strong>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -66,9 +84,9 @@ function Header() {
               </div>
               <div className="search-btn"></div>
               <div className="link-btn">
-                <a href="/login" className="theme-btn btn-style-one">
-                  Login
-                </a>
+                <Link to={!isLogged ? 'login': ''} className="theme-btn btn-style-one" onClick={isLogged && logOutHandler}>
+                  {!isLogged ? 'Login' : 'Log Out'}
+                </Link>
               </div>
             </div>
           </div>
@@ -125,7 +143,7 @@ function Header() {
         <nav className="menu-box">
           <div className="nav-logo">
             <a href="index.html">
-                <img src={logo} alt="" title="" />
+              <img src={logo} alt="" title="" />
             </a>
           </div>
           <div className="menu-outer">

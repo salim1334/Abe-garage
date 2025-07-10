@@ -13,8 +13,6 @@ const dbConfig = {
 // Create a connection pool to the database
 const pool = mysql.createPool(dbConfig);
 
-console.log('Starting DB connection test...');
-// Test the database connection and log a message
 (async () => {
   console.log('Inside DB connection test...');
   try {
@@ -24,7 +22,6 @@ console.log('Starting DB connection test...');
   } catch (err) {
     console.error('Database connection failed:', err);
   }
-  console.log('DB connection test finished.');
 })();
 
 // Prepare a function that will execute a query asynchronously
